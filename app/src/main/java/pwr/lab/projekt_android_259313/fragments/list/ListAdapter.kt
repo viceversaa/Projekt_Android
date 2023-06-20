@@ -15,11 +15,8 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     private var eventList = emptyList<Event>()
 
-
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(LayoutInflater.from(parent.context).inflate(pwr.lab.projekt_android_259313.R.layout.result_part, parent, false))
     }

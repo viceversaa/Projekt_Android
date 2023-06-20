@@ -24,7 +24,6 @@ class AddFragment : Fragment() {
     lateinit var eventNamePlace: EditText
     lateinit var eventDate: CalendarView
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,40 +32,65 @@ class AddFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add, container, false)
         saveButton = view.findViewById(R.id.button)
+        eventDate = view.findViewById(R.id.calendar)
         mEventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
-
         saveButton.setOnClickListener {
             insertDataToDatabase()
         }
+
+
+        /*val date = Date()
+        val cal = Calendar.getInstance()
+        cal.time = date
+        cal.add(Calendar.MONTH, 1)
+        val currentDate: Date = cal.time*/
+
         return view
     }
 
     private fun insertDataToDatabase() {
 
+        val eventDate = eventDate.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val Date = (dayOfMonth.toString() + '/'
+                    + (month + 1) + '/' + year)
+            //eventDate.setDate(Date.toLong())
+            //Toast.makeText(requireContext(), Date, Toast.LENGTH_SHORT).show()
+            eventDate.date
+        }
+
         descriptionPlace = view!!.findViewById(R.id.opis)
         eventNamePlace = view!!.findViewById(R.id.nazwaWydarzenia)
-        eventDate = view!!.findViewById(R.id.calendar)
+        //eventDate = view!!.findViewById(R.id.calendar)
 
 
         val eventName = eventNamePlace.text.toString()
         val eventDescription = descriptionPlace.text.toString()
-        val eventDate = eventDate.date.toString()
+        //val eventDate = eventDate.date
 
-        if(inputCheck(eventName, eventDescription, eventDate)){
-            // Create Event Object
-            val event = Event(0, eventName, eventDescription, eventDate)
-            // Add Data to Database
-            mEventViewModel.addEvent(event)
-            Toast.makeText(requireContext(), " Udało się dodać nowe wydarzenie!", Toast.LENGTH_LONG).show()
-            // Navigate Back
-            findNavController().navigate(R.id.action_addFragment_to_listFragment)
-        }else{
-            Toast.makeText(requireContext(), "Please fill out all fields.", Toast.LENGTH_LONG).show()
+        if (inputCheck(eventName, eventDescription, eventDate.toString()) {
+                // Create Event Object
+                val event = Event(0, eventName, eventDescription, eventDate.toString())
+                // Add Data to Database
+                mEventViewModel.addEvent(event)
+                Toast.makeText(
+                    requireContext(),
+                    " Udało się dodać nowe wydarzenie!",
+                    Toast.LENGTH_LONG
+                ).show()
+                // Navigate Back
+                findNavController().navigate(R.id.action_addFragment_to_listFragment)
+            }) else {
+            Toast.makeText(requireContext(), "Uzupełnij wszystkie pola.", Toast.LENGTH_LONG).show()
         }
 
     }
 
-    private fun inputCheck(eventName: String, eventDescription: String, eventDate: String): Boolean{
+    private fun inputCheck(
+        eventName: String,
+        eventDescription: String,
+        eventDate: String,
+        function: () -> Unit
+    ): Boolean{
         return !(TextUtils.isEmpty(eventName) || TextUtils.isEmpty(eventDescription) || TextUtils.isEmpty(eventDate))
     }
 }
