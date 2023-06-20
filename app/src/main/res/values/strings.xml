@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Projekt_Android_259313</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="wydarzenie">Wydarzenie</string>
+    <string name="dodaj_nowy_element">Dodaj nowy element</string>
+</resources>
